@@ -52,7 +52,6 @@ const ADD_LIKE = gql`
   }
 `;
 
-
 export default function AuthenticationContextProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(null);
@@ -62,14 +61,13 @@ export default function AuthenticationContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [execRegister, {}] = useMutation(REGISTER);
   const [exeChange, {}] = useMutation(CHANGE_PASS);
+  
   const [userdata, setUserData] = useState(null);
-
-  const [exeAddLike, {}] = useMutation(ADD_LIKE,{
+  const [exeAddLike, {}] = useMutation(ADD_LIKE, {
     // update(cache,{data}){
     //   const prevCache = cache.readQuery({
     //     query:GET_USER_LIKES
     //   })
-
     //   debugger
     //   console.log({prevCache})
     //   debugger
@@ -83,11 +81,11 @@ export default function AuthenticationContextProvider({ children }) {
     //   })
     // }
   });
-  
+
   useEffect(() => {
-    const tokenFromStorage = window.localStorage.getItem(TOKEN_STORAGE)
-    if(tokenFromStorage) {
-      const parsedToken = JSON.parse(tokenFromStorage)
+    const tokenFromStorage = window.localStorage.getItem(TOKEN_STORAGE);
+    if (tokenFromStorage) {
+      const parsedToken = JSON.parse(tokenFromStorage);
       setToken(parsedToken);
       setUserData(parsedToken);
       setUser(parsedToken);
@@ -105,7 +103,7 @@ export default function AuthenticationContextProvider({ children }) {
         setToken(data.login);
         setUserData(data.login);
         setUser(data.login);
-        window.localStorage.setItem(TOKEN_STORAGE,JSON.stringify(data.login))
+        window.localStorage.setItem(TOKEN_STORAGE, JSON.stringify(data.login));
       })
       .catch((error) => {
         console.log(error);
@@ -145,7 +143,6 @@ export default function AuthenticationContextProvider({ children }) {
   };
 
   const doAddLike = (url, { id, lastname, name, username }) => {
-
     exeAddLike({
       variables: {
         url,
@@ -156,7 +153,7 @@ export default function AuthenticationContextProvider({ children }) {
           lastname,
         },
       },
-      refetchQueries:[GET_USER_LIKES]
+      refetchQueries: [GET_USER_LIKES],
     })
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
@@ -178,7 +175,6 @@ export default function AuthenticationContextProvider({ children }) {
         setUserData,
         doPassChange,
         doAddLike,
-        
       }}
     >
       {children}
